@@ -1,0 +1,14 @@
+# Test input for CUDA
+dimensions:unit-cell-size = 3.54
+dimensions:system-size-x = 5.0
+dimensions:system-size-y = 5.0
+dimensions:system-size-z = 5.0
+material:file=Co.mat
+sim:program=time-series
+sim:integrator=monte-carlo
+sim:temperature=300.0
+sim:time-step=1.0E-15
+sim:time-steps-increment=1
+sim:equilibration-time-steps=10
+sim:loop-time-steps=5
+gpu:acceleration=on
