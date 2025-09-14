@@ -357,6 +357,21 @@ namespace vcuda
          std::copy(::dipole::atom_mu0demag_field_array_z.begin(), ::dipole::atom_mu0demag_field_array_z.end(), tmp_buffer.begin());
          cudaMemcpy(cu::d_z_mu0H_dip_field, tmp_buffer.data(), num_bytes, cudaMemcpyHostToDevice);
 
+         // ======唐愈涵加的目的是实现局部场======
+         // 分配局部场设备内存
+         cudaMalloc((void **)&cu::local_field_x, num_bytes);
+         cudaMalloc((void **)&cu::local_field_y, num_bytes);
+         cudaMalloc((void **)&cu::local_field_z, num_bytes);
+
+         // 从主机复制局部场数据到设备
+         std::copy(::cells::local_field_array_x.begin(), ::cells::local_field_array_x.end(), tmp_buffer.begin());
+         cudaMemcpy(cu::local_field_x, tmp_buffer.data(), num_bytes, cudaMemcpyHostToDevice);
+         std::copy(::cells::local_field_array_y.begin(), ::cells::local_field_array_y.end(), tmp_buffer.begin());
+         cudaMemcpy(cu::local_field_y, tmp_buffer.data(), num_bytes, cudaMemcpyHostToDevice);
+         std::copy(::cells::local_field_array_z.begin(), ::cells::local_field_array_z.end(), tmp_buffer.begin());
+         cudaMemcpy(cu::local_field_z, tmp_buffer.data(), num_bytes, cudaMemcpyHostToDevice);
+         // ============================
+
          return true;
       }
 

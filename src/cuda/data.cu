@@ -14,11 +14,13 @@
 
 #include "data.hpp"
 
-namespace vcuda{
+namespace vcuda
+{
 
 #ifdef CUDA
 
-   namespace internal{
+   namespace internal
+   {
 
       cu_real_t *h_x_spin_transfer_buffer;
       cu_real_t *h_y_spin_transfer_buffer;
@@ -39,14 +41,14 @@ namespace vcuda{
          cu_real_t *d_y_coord;
          cu_real_t *d_z_coord;
 
-         //cu_real_array_t x_coord_array(0UL);
-         //cu_real_array_t y_coord_array(0UL);
-         //cu_real_array_t z_coord_array(0UL);
+         // cu_real_array_t x_coord_array(0UL);
+         // cu_real_array_t y_coord_array(0UL);
+         // cu_real_array_t z_coord_array(0UL);
 
          int *d_materials;
          int *d_cells;
-         //cu_index_array_t type_array(0UL);
-         //cu_index_array_t cell_array(0UL);
+         // cu_index_array_t type_array(0UL);
+         // cu_index_array_t cell_array(0UL);
 
          int *d_limits;
          int *d_neighbours;
@@ -98,12 +100,12 @@ namespace vcuda{
          cu_real_t *d_volume;
          cu_real_t *d_num_atoms;
 
-         //cu_real_array_t volume_array(0UL);
-         //cu_index_array_t num_atoms(0UL);
-         
+         // cu_real_array_t volume_array(0UL);
+         // cu_index_array_t num_atoms(0UL);
+
          int *d_cell_id_array;
          int *d_num_atoms_in_cell;
- 
+
       } /* cells */
 
       namespace hamr
@@ -142,6 +144,11 @@ namespace vcuda{
       cu_real_t *d_y_mu0H_dip_field;
       cu_real_t *d_z_mu0H_dip_field;
 
+      // ======唐愈涵加的目的是实现局部场======
+      cu_real_t *local_field_x = NULL;
+      cu_real_t *local_field_y = NULL;
+      cu_real_t *local_field_z = NULL;
+      // ============================
 
       /*cu_real_array_t x_total_spin_field_array(0UL);
       cu_real_array_t y_total_spin_field_array(0UL);
@@ -155,7 +162,7 @@ namespace vcuda{
       cu_real_array_t z_dipolar_field_array(0UL);
       */
 
-      curandState * d_rand_state;
+      curandState *d_rand_state;
 
       namespace stats
       {

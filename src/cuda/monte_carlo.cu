@@ -8,6 +8,7 @@
 #include "material.hpp"
 #include "random.hpp"
 #include "cuda.hpp"
+#include "cells.hpp" // 添加 cells 头文件
 
 #include "spin_fields.hpp"
 
@@ -328,6 +329,7 @@ namespace vcuda
                 int *accepted,
                 cu_real_t *spin3n,
                 cu_real_t *x_ext_field, cu_real_t *y_ext_field, cu_real_t *z_ext_field,
+                cu_real_t *local_field_x, cu_real_t *local_field_y, cu_real_t *local_field_z, // 添加局部场参数
                 int *csr_rows, int *csr_cols, cu_real_t *vals,
                 const cu_real_t step_size, const cu_real_t global_temperature, const int N, const int Natoms,
                 ::montecarlo::algorithm_t algorithm, cu_real_t adaptive_sigma)
@@ -544,6 +546,13 @@ namespace vcuda
                     cu_real_t hy = ::vcuda::internal::exchange::exchange_field_component(csr_cols, csr_rows, vals, spin3n, atom + Natoms);
                     cu_real_t hz = ::vcuda::internal::exchange::exchange_field_component(csr_cols, csr_rows, vals, spin3n, atom + 2 * Natoms);
 
+                    // ======唐愈涵加的目的是实现局部场======
+                    // 添加局部场到交换场
+                    hx += local_field_x[atom];
+                    hy += local_field_y[atom];
+                    hz += local_field_z[atom];
+                    // ============================
+
                     cu_real_t dEx = -mat.mu_s_si * ((nsx - sx) * hx + (nsy - sy) * hy + (nsz - sz) * hz);
 
                     cu_real_t dE = (Enew - Eold + dEx) / (1.38064852e-23 * global_temperature);
@@ -629,6 +638,7 @@ namespace vcuda
                             d_accepted,
                             ::cu::atoms::d_spin,
                             ::cu::d_x_external_field, ::cu::d_y_external_field, ::cu::d_z_external_field,
+                            ::cu::local_field_x, ::cu::local_field_y, ::cu::local_field_z, // 添加局部场参数
                             ::vcuda::internal::exchange::d_csr_rows, ::vcuda::internal::exchange::d_coo_cols, ::vcuda::internal::exchange::d_coo_vals,
                             step_size, sim::temperature, colour_list[i].size(), ::atoms::num_atoms,
                             ::montecarlo::algorithm, (cu_real_t)::montecarlo::internal::adaptive_sigma);

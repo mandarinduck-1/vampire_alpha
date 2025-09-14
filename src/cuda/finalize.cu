@@ -29,17 +29,19 @@
 namespace cu = vcuda::internal;
 #endif
 
-namespace vcuda{
+namespace vcuda
+{
 
    //----------------------------------------------------------------------------------
    // Function de-initialize gpu data
    //----------------------------------------------------------------------------------
-   void finalize(){
+   void finalize()
+   {
 
       // Only compile code if CUDA enabled
 #ifdef CUDA
 
-      vcuda::internal::__finalize ();
+      vcuda::internal::__finalize();
 
       vcuda::internal::mc::finalise();
       cudaProfilerStop();
@@ -51,15 +53,34 @@ namespace vcuda{
 #ifdef CUDA
    namespace internal
    {
-      void __finalize ()
+      void __finalize()
       {
 
-         check_cuda_errors (__FILE__, __LINE__);
+         check_cuda_errors(__FILE__, __LINE__);
          std::cout << "CUDA time taken \t" << cuda_timer.seconds_elapsed() << std::endl;
          // De-allocate the exchange fields
          cu::exchange::finalise_exchange();
 
-         check_cuda_errors (__FILE__, __LINE__);
+         // ======唐愈涵加的目的是实现局部场======
+         // 释放局部场设备内存
+         if (cu::local_field_x != NULL)
+         {
+            cudaFree(cu::local_field_x);
+            cu::local_field_x = NULL;
+         }
+         if (cu::local_field_y != NULL)
+         {
+            cudaFree(cu::local_field_y);
+            cu::local_field_y = NULL;
+         }
+         if (cu::local_field_z != NULL)
+         {
+            cudaFree(cu::local_field_z);
+            cu::local_field_z = NULL;
+         }
+         // ============================
+
+         check_cuda_errors(__FILE__, __LINE__);
          /*
          cu::atoms::x_spin_array.cu_real_array_t::~cu_real_array_t ();
          cu::atoms::y_spin_array.cu_real_array_t::~cu_real_array_t ();
@@ -130,7 +151,6 @@ namespace vcuda{
          cu::stats::material_height_magnetization.cu_real_array_t::~cu_real_array_t ();
          cu::stats::material_height_mean_magnetization.cu_real_array_t::~cu_real_array_t ();
          */
-
       }
    } /* internal */
 #endif

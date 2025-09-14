@@ -16,7 +16,6 @@
 #include "internal.hpp"
 #include "statistics.hpp"
 
-
 #ifdef CUDA
 namespace cu = ::vcuda::internal;
 #endif
@@ -69,7 +68,6 @@ namespace vcuda
           */
 
       } /* atoms */
-
 
       namespace cells
       {
@@ -139,6 +137,11 @@ namespace vcuda
       extern cu_real_t *d_y_mu0H_dip_field;
       extern cu_real_t *d_z_mu0H_dip_field;
 
+      // ======唐愈涵加的目的是实现局部场======
+      extern cu_real_t *local_field_x;
+      extern cu_real_t *local_field_y;
+      extern cu_real_t *local_field_z;
+      // ============================
 
       /*
        * Required by the total external field calculator
@@ -149,7 +152,7 @@ namespace vcuda
        * cuRAND states
        */
 
-      extern curandState * d_rand_state;
+      extern curandState *d_rand_state;
 
    } /* internal */
 #endif
