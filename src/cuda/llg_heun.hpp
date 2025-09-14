@@ -24,7 +24,8 @@ namespace vcuda
 
 #ifdef CUDA
 
-      struct heun_parameters_t {
+      struct heun_parameters_t
+      {
          /**
           * @var gamma_rel / (1 + alpha ** 2)
           */
@@ -45,32 +46,32 @@ namespace vcuda
          /*
           * Internal functions
           */
-         void __llg_init ();
-         void __llg_step ();
+         void __llg_init();
+         void __llg_step();
 
          /*
           * Internal kernels
           */
-         __global__ void llg_heun_predictor_step (
-               int * material_id,
-               heun_parameters_t * heun_parameters,
-               cu_real_t * x_spin, cu_real_t * y_spin, cu_real_t * z_spin,
-               cu_real_t * x_sp_field, cu_real_t * y_sp_field, cu_real_t * z_sp_field,
-               cu_real_t * x_ext_field, cu_real_t * y_ext_field, cu_real_t * z_ext_field,
-               cu_real_t * dS_x, cu_real_t * dS_y, cu_real_t * dS_z,
-               cu_real_t dt, size_t num_atoms
-               );
+         __global__ void llg_heun_predictor_step(
+             int *material_id,
+             heun_parameters_t *heun_parameters,
+             cu_real_t *x_spin, cu_real_t *y_spin, cu_real_t *z_spin,
+             cu_real_t *x_sp_field, cu_real_t *y_sp_field, cu_real_t *z_sp_field,
+             cu_real_t *x_ext_field, cu_real_t *y_ext_field, cu_real_t *z_ext_field,
+             cu_real_t *local_field_x, cu_real_t *local_field_y, cu_real_t *local_field_z, // 添加局部场参数
+             cu_real_t *dS_x, cu_real_t *dS_y, cu_real_t *dS_z,
+             cu_real_t dt, size_t num_atoms);
 
-         __global__ void llg_heun_corrector_step (
-               int * material_id,
-               heun_parameters_t * heun_parameters,
-               cu_real_t * x_spin, cu_real_t * y_spin, cu_real_t * z_spin,
-               cu_real_t * x_sp_field, cu_real_t * y_sp_field, cu_real_t * z_sp_field,
-               cu_real_t * x_ext_field, cu_real_t * y_ext_field, cu_real_t * z_ext_field,
-               cu_real_t * x_spin_buffer, cu_real_t * y_spin_buffer, cu_real_t * z_spin_buffer,
-               cu_real_t * dS_x, cu_real_t * dS_y, cu_real_t * dS_z,
-               cu_real_t dt, size_t num_atoms
-               );
+         __global__ void llg_heun_corrector_step(
+             int *material_id,
+             heun_parameters_t *heun_parameters,
+             cu_real_t *x_spin, cu_real_t *y_spin, cu_real_t *z_spin,
+             cu_real_t *x_sp_field, cu_real_t *y_sp_field, cu_real_t *z_sp_field,
+             cu_real_t *x_ext_field, cu_real_t *y_ext_field, cu_real_t *z_ext_field,
+             cu_real_t *local_field_x, cu_real_t *local_field_y, cu_real_t *local_field_z, // 添加局部场参数
+             cu_real_t *x_spin_buffer, cu_real_t *y_spin_buffer, cu_real_t *z_spin_buffer,
+             cu_real_t *dS_x, cu_real_t *dS_y, cu_real_t *dS_z,
+             cu_real_t dt, size_t num_atoms);
       } /* llg */
 
 #endif

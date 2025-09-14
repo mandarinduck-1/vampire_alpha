@@ -493,7 +493,7 @@ namespace vcuda
          // Copy into <cu_real_t> vectors to avoid having to perform later std::copy()
          num_bytes = ::cells::num_cells * ::cells::num_local_cells * sizeof(cu_real_t);
 
-         cu_real_t precision; // dummy variable to allow overflow
+         cu_real_t precision = 0.0; // initialize dummy variable to avoid warnings
          std::vector<cu_real_t> tensor_xx = ::dipole::unroll_tensor(1, precision);
          std::vector<cu_real_t> tensor_xy = ::dipole::unroll_tensor(2, precision);
          std::vector<cu_real_t> tensor_xz = ::dipole::unroll_tensor(3, precision);
