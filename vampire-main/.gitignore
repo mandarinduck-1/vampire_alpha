@@ -91,16 +91,8 @@ run/unit-cell-creator
 
 #----------------------------------------------
 # Eclipse project files and folders
-#----------------------------------------------
-.cproject
-.project
-.settings/
-
-#----------------------------------------------
-# Vscode and Clang project files and folders
-#----------------------------------------------
 .vscode/
-.vscode-server/
+
 .cache/
 .clang-tidy
 .nv/
